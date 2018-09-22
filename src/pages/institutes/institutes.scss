@@ -1,0 +1,53 @@
+page-institutes {
+  .searchbar-md .searchbar-input {
+    border-radius: 23px !important;
+  }
+
+  .cssForRoundSLidingItems .button-inner {
+    background-color: #ffffff21;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    color: white;
+    font-size: 11px
+  }
+
+  .cssForRoundSLidingItems button {
+    background-color: black;
+    margin-left: -1px !important;
+  }
+
+  .cssForRoundSLidingItems,
+  .cssForRoundSLidingItems ion-item {
+    height: 75px !important;
+  }
+
+  .cssForRoundSLidingItems ion-icon:not(.nextDiff) {
+    margin-top: 10px !important;
+    font-size: 2.1em !important;
+  }
+
+  h2 {
+    color: map_get($colors, theme_color) !important;
+  }
+
+  .nextDiff {
+    color: map_get($colors, theme_color);
+  }
+
+  ion-item-options[side=right] ion-icon {
+    color: red;
+  }
+
+  .login {
+    color: map_get($colors, theme_color) !important;
+  }
+
+  ion-searchbar {
+    background: map_get($colors, theme_color) !important;
+  }
+
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+}

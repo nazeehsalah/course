@@ -1,0 +1,68 @@
+<!--
+  Generated template for the SignupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--
+  Generated template for the SignupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>اضافه دوره جديد</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-list>
+
+      <ion-item>
+        <ion-label fixed>اسم الدوره</ion-label>
+        <ion-input type="text" [(ngModel)]="course.name" name="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>كود الدوره</ion-label>
+        <ion-input type="text" [(ngModel)]="course.code" name="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>وصف الدوره</ion-label>
+        <ion-input type="text" [(ngModel)]="course.desc" name="desc"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>الغياب المسوح</ion-label>
+        <ion-input type="number" [(ngModel)]="course.dayAbsance" name="dayAbsance"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>اخر الحضور</ion-label>
+        <ion-datetime displayFormat="hh:mm A"   pickerFormat="hh:mm A" doneText="تم" cancelText="اغلاق" [(ngModel)]="course.lastTime" ></ion-datetime>
+      </ion-item>
+        <ion-item>
+        <ion-label fixed>تاريخ البدايه</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY" max="2200" doneText="تم" cancelText="اغلاق" [(ngModel)]="course.startDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>تاريخ النهايه</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY" max="2200" cancelText="اغلاق" doneText="تم" [(ngModel)]="course.endDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>نوع الدوره</ion-label>
+        <ion-select [(ngModel)]="course.type">
+          <ion-option value="مجانيه">مجانيه</ion-option>
+          <ion-option value="مدفوعه">مدفوعه</ion-option>
+        </ion-select>
+      </ion-item>
+      <div padding>
+        <button ion-button class="signUpBtn" block (click)="addCourse()" [hidden]="btn_edit" > اضافه دوره</button>
+        <button ion-button class="signUpBtn" block (click)="updateCourse()" [hidden]="!btn_edit"> تعديل الدوره</button>
+
+      </div>
+    </ion-list>
+</ion-content>
+
+

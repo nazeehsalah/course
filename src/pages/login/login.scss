@@ -1,0 +1,67 @@
+page-login {
+  .logoHeader {
+    text-align: center !important;
+    margin-top: 2% !important;
+  }
+  
+  button.login {
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    background:  #C4A200 !important;
+    padding: 22px !important;
+    &.activated {
+      background-color: #C4A200;
+    }
+  }
+  h3{
+    color:#fff
+  }
+  button.signup {
+    background-color: white;
+    color: map_get($colors, theme_color);
+    border: 3px solid map_get($colors, theme_color) !important;
+    padding: 19px !important;
+  }
+  input {
+    color: map_get($colors, theme_color) !important;
+    text-align: center !important;
+  }
+  ::-webkit-input-placeholder {
+    text-align: center;
+    color: map_get($colors, theme_color) !important;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+    color: map_get($colors, theme_color) !important;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
+    color: map_get($colors, theme_color) !important;
+  }
+  :-ms-input-placeholder {
+    text-align: center;
+    color: map_get($colors, theme_color) !important;
+  }
+  .input-access-code {
+    border: 3px solid map_get($colors, theme_color) !important;
+  }
+  .content-md {
+    background-color: black !important;
+  }
+  .welcomeHeader {
+    text-align: center;
+    color: map_get($colors, theme_color);
+    font-family: "sans-serif";
+  }
+  .content-ios {
+    background: black !important;
+  }
+  a{
+    color: map_get($colors, theme_color);
+    text-decoration: none !important;
+  }
+  .create_account{
+    text-align:center;
+  }
+  
+
+}

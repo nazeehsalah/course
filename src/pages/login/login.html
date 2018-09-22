@@ -1,0 +1,27 @@
+<ion-content scroll="false">
+  <div class="fixed-content">
+    <div class="logoHeader">
+      <img alt="logo" height="150" style="position: relative" src="../../assets/imgs/Sultan_Qaboos_University_Logo.png">
+      <h3>مركز خدمه المجتمع والتعليم المستمر</h3>
+    </div>
+    <h1 class="welcomeHeader">تسجيل الدخول</h1>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="signIn()">
+      <div padding>
+        <ion-input type="text"  [(ngModel)]="account.email" class="input-access-code" placeholder="اسم المستخدم" formControlName="user_name"></ion-input>
+        <br>
+        <ion-input type="password" [(ngModel)]="account.password" class="input-access-code" placeholder="الرقم السرى" formControlName="user_pass"></ion-input>
+        <br>
+        <a >
+          <button ion-button block class="login">تسجيل الدخول</button>
+        </a>
+        <p style="text-align:center;color:  #1ABC9C;">-او-</p>
+
+        <div class="create_account" >
+          <a (click)="signup()">انشاء حساب جديد</a>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+        </div>
+      </div>
+    </form>
+  </div>
+
+</ion-content>
+

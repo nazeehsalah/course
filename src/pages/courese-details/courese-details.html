@@ -1,0 +1,45 @@
+<!--
+  Generated template for the CoureseDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>CoureseDetails</ion-title>
+    <ion-buttons end (click)="dismiss()">
+      <button ion-button>
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="item-detail" padding>
+    <h4>أسم الدوره</h4>
+    <p>{{course.name}}</p>
+    <hr>
+    <h4>كود الدوره</h4>
+    <p>{{course.code}}</p>
+    <hr>
+    <h4>وصف الدوره</h4>
+    <p>{{course.desc}}</p>
+    <hr>
+    <h4>تاريخ بدايه الدوره</h4>
+    <p>{{course.startDate}}</p>
+    <hr>
+    <h4>تاريخ نهايه الدوره</h4>
+    <p>{{course.endDate}}</p>
+    <hr>
+    <h4>ايام الغياب المسموح بها</h4>
+    <p>{{course.dayAbsance}}</p>
+    <hr>
+    <h4>اخر موعد لتسجيل الحضور</h4>
+    <p>{{course.lastTime}}</p>
+    <hr>
+    <h4>توع الدوره</h4>
+    <p>{{course.type}}</p>
+    <hr>
+  </div>
+</ion-content>

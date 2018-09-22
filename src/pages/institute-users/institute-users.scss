@@ -1,0 +1,10 @@
+page-institute-users {
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+
+  h2 {
+    color: map_get($colors, theme_color) !important;
+  }
+
+}

@@ -1,0 +1,78 @@
+<!--
+  Generated template for the InstitutesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu" [hidden]="choiceCourse"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>الموسسات</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-button [hidden]="!choiceCourse" (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <!--   <div [hidden]="coursesList.isEmpty">
+   -->
+  <ion-searchbar (ionInput)="getItems($event)" (ionCancel)="onCancel()" placeholder="ابحث عن كورس"></ion-searchbar>
+  <ion-list [hidden]="search">
+    <ion-item-sliding class="cssForRoundSLidingItems" *ngFor="let item of institutesList | async" #slidingItem>
+      <ion-item-options side="left" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="goToUsers(item)">
+          <ion-icon name="people"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="edit(item)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="deleteInstitute(item)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item>
+        <h2>{{item.name}}</h2>
+        <p>{{item.code}}</p>
+        <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff"></ion-icon>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list [hidden]="!search">
+    <ion-item-sliding class="cssForRoundSLidingItems" *ngFor="let item of searchList " #slidingItem>
+      <ion-item-options side="left" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="goToUsers(item)">
+          <ion-icon name="people"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="edit(item)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="deleteInstitute(item)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item>
+        <h2>{{item.name}}</h2>
+        <p>{{item.code}}</p>
+        <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff" [hidden]="courseAdding"></ion-icon>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <!-- </div>
+    <div class="noCourse" [hidden]="coursesList.isEmpty" text-center>
+      <ion-icon name="sad" color="theme_color"></ion-icon>
+      <h2>لايوجد دورات مضافه </h2>
+    </div> -->
+</ion-content>

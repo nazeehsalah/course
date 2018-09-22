@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu" [hidden]="choiceCourse"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>الدورات المتاحه</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addItem()" [hidden]="courseAdding||choiceCourse">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-button [hidden]="!choiceCourse" (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <!--   <div [hidden]="coursesList.isEmpty">
+ -->
+  <ion-searchbar (ionInput)="getItems($event)" (ionCancel)="onCancel()" placeholder="ابحث عن كورس"></ion-searchbar>
+  <ion-list [hidden]="search">
+    <ion-item-sliding class="cssForRoundSLidingItems" *ngFor="let item of coursesList | async" #slidingItem [hidden]="checkUserIncourse(item.users)">
+      <ion-item-options side="left" [hidden]="courseAdding||choiceCourse" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="goToCourseParticipant(item)">
+          <ion-icon name="people"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="editCourse(item)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start>
+          <ion-icon name="document"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="enroleUser(item)">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right" [hidden]="courseAdding||choiceCourse" style="direction:ltr">
+        <button ion-button color="dark" (click)="deleteCourse(item)" icon-start>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item (press)="pressEvent($event)">
+        <h2 (click)="courseDetaisl(item)" [hidden]="choiceCourse">{{item.name}}</h2>
+        <p (click)="courseDetaisl(item)" [hidden]="choiceCourse">{{item.code}}</p>
+        <h2 (click)="dismissModalWithData(item)" [hidden]="!choiceCourse">{{item.name}}</h2>
+        <p (click)="dismissModalWithData(item)" [hidden]="!choiceCourse">{{item.code}}</p>
+        <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff" [hidden]="courseAdding"></ion-icon>
+        <ion-icon item-end name="add-circle" class="nextDiff" (click)="addCourseToUSer(item)" [hidden]="!courseAdding ||choiceCourse"></ion-icon>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list [hidden]="!search">
+    <ion-item-sliding class="cssForRoundSLidingItems" *ngFor="let item of searchList " #slidingItem [hidden]="checkUserIncourse(item.users)">
+      <ion-item-options side="left" [hidden]="courseAdding||choiceCourse" style="direction:ltr">
+        <button ion-button color="dark" icon-start (click)="goToCourseParticipant(item)">
+          <ion-icon name="people"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="editCourse(item)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start>
+          <ion-icon name="document"></ion-icon>
+        </button>
+        <button ion-button color="dark" icon-start (click)="enroleUser(item)">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right" [hidden]="courseAdding||choiceCourse" style="direction:ltr">
+        <button ion-button color="dark" (click)="deleteCourse(item)" icon-start>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item (press)="pressEvent($event)">
+        <h2 (click)="courseDetaisl(item)" [hidden]="choiceCourse">{{item.name}}</h2>
+        <p (click)="courseDetaisl(item)" [hidden]="choiceCourse">{{item.code}}</p>
+        <h2 (click)="dismissModalWithData(item)" [hidden]="!choiceCourse">{{item.name}}</h2>
+        <p (click)="dismissModalWithData(item)" [hidden]="!choiceCourse">{{item.code}}</p>
+        <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff" [hidden]="courseAdding"></ion-icon>
+        <ion-icon item-end name="add-circle" class="nextDiff" (click)="addCourseToUSer(item)" [hidden]="!courseAdding ||choiceCourse"></ion-icon>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <!-- </div>
+  <div class="noCourse" [hidden]="coursesList.isEmpty" text-center>
+    <ion-icon name="sad" color="theme_color"></ion-icon>
+    <h2>لايوجد دورات مضافه </h2>
+  </div> -->
+</ion-content>

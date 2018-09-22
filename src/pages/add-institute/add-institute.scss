@@ -1,0 +1,10 @@
+page-add-institute {
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+
+  .signUpBtn {
+    background: map_get($colors, theme_color) !important;
+  }
+
+}
