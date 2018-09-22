@@ -77,14 +77,14 @@ export class AtendancePage {
         let currentTime = new Date().getHours() * 60 + new Date().getMinutes()
         if (
           currentTime < attendenceLastTime
-          && currentTime > new Date(2018, 8, 22, 18, 20).getHours() * 60 + new Date(2018, 8, 22, 18, 20).getMinutes()
+          && currentTime > new Date(2018, 8, 22, 8, 0).getHours() * 60 + new Date(2018, 8, 22, 8, 0).getMinutes()
         ) {
           this.infoText = "تستطيع تسجيل حضور او مغادره المتدربين"
         } else {
           this.infoText = ''
           if (
             currentTime > attendenceLastTime
-            && currentTime < new Date(2018, 8, 22, 18, 10).getHours() * 60 + new Date(2018, 8, 22, 18, 10).getMinutes()
+            && currentTime < new Date(2018, 8, 22, 2, 0).getHours() * 60 + new Date(2018, 8, 22, 2, 0).getMinutes()
           ) {
             this.infoText = "تسطيع فقط تسجيل خروج المتدربين الذين قد حضرو اليوم فقد اغلق تسجيل الحضور لهذه الدوره"
             this.leavOnly = true
