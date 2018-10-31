@@ -7,39 +7,41 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>CoureseDetails</ion-title>
+    <ion-title>تفاصيل البرنامج</ion-title>
     <ion-buttons end (click)="dismiss()">
       <button ion-button>
-        <ion-icon name="md-close" ></ion-icon>
+        <ion-icon name="md-close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <div class="item-detail" padding>
-    <h4>أسم الدوره</h4>
-    <p>{{course.name}}</p>
-    <hr>
-    <h4>كود الدوره</h4>
+    <h4>كود البرنامج</h4>
     <p>{{course.code}}</p>
     <hr>
-    <h4>وصف الدوره</h4>
-    <p>{{course.desc}}</p>
+    <h4>أسم البرنامج</h4>
+    <p>{{course.name}}</p>
     <hr>
-    <h4>تاريخ بدايه الدوره</h4>
+    <h4>اسم البرنامج باللغه الانجليزيه</h4>
+    <p>{{course.nameInEnglish}}</p>
+    <hr>
+    <h4>قسم البرنامج</h4>
+    <p>{{course.deprt}}</p>
+    <hr>
+    <h4>نوع البرنامج</h4>
+    <p>{{course.type}}</p>
+    <hr>
+    <h4>تاريخ بدايه البرنامج</h4>
     <p>{{course.startDate}}</p>
     <hr>
-    <h4>تاريخ نهايه الدوره</h4>
+    <h4>تاريخ نهايه البرنامج</h4>
     <p>{{course.endDate}}</p>
     <hr>
     <h4>ايام الغياب المسموح بها</h4>
     <p>{{course.dayAbsance}}</p>
     <hr>
-    <h4>اخر موعد لتسجيل الحضور</h4>
+    <h4>اخر وقت لتسجيل الحضور</h4>
     <p>{{course.lastTime}}</p>
-    <hr>
-    <h4>توع الدوره</h4>
-    <p>{{course.type}}</p>
-    <hr>
   </div>
 </ion-content>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ToastController, AlertController, LoadingController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, AlertController, ViewController, MenuController } from 'ionic-angular';
 import { AddCoursePage } from '../add-course/add-course';
 import { CourseProvider } from '../../providers/course/course';
 import { Course } from '../../model/course';
-import { AngularFireDatabase, AngularFireList, } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { CoureseDetailsPage } from '../courese-details/courese-details';
@@ -13,6 +13,8 @@ import { CourseParticipantsPage } from '../course-participants/course-participan
 import { UtilsProvider } from '../../providers/utils/utils';
 import { User } from '../../model/user';
 import * as firebase from 'firebase'
+import { Storage } from '@ionic/storage';
+import { AtendenceDaysPage } from '../atendence-days/atendence-days';
 
 @Component({
   selector: 'page-home',
@@ -23,6 +25,8 @@ export class HomePage {
   public courseAdding: boolean
   public user: User
   public choiceCourse
+  public loginUser: User
+  public adminRole: boolean = false
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,7 +37,52 @@ export class HomePage {
     public viewCtrl: ViewController,
     public alertCtrl: AlertController,
     public utils: UtilsProvider,
+    public menu: MenuController,
+    private storage: Storage
   ) {
+    this.loginUser = this.navParams.get("loginuser")
+    if (this.loginUser == undefined) {
+      this.storage.get("user").then((val) => {
+        this.setLoginUser(val)
+      }).then(() => {
+        if (this.loginUser.role == "مستخدم") {
+          this.adminRole = false
+          this.menu.enable(true, "user")
+          this.menu.enable(false, "menu-dark")
+          console.log("مستخدك")
+          console.log(this.menu.getMenus())
+        }
+        else if (this.loginUser.role == "مدير") {
+          this.adminRole = true
+          this.menu.enable(false, "user")
+          this.menu.enable(true, "menu-dark")
+        } else {
+          console.log("else")
+        }
+        this.initilize()
+
+      })
+    } else {
+      if (this.loginUser.role == "مستخدم") {
+        this.adminRole = false
+        this.menu.enable(true, "user")
+        this.menu.enable(false, "menu-dark")
+        console.log("مستخدك")
+        console.log(this.menu.getMenus())
+      }
+      else if (this.loginUser.role == "مدير") {
+        this.adminRole = true
+        this.menu.enable(false, "user")
+        this.menu.enable(true, "menu-dark")
+        console.log("مي")
+        console.log(this.menu.getMenus())
+      } else {
+        console.log("else")
+      }
+      this.initilize()
+
+    }
+
     this.choiceCourse = this.navParams.get("choiceCourse")
     if (this.choiceCourse == undefined) {
       this.choiceCourse = false
@@ -49,12 +98,14 @@ export class HomePage {
       this.user = this.navParams.get("user")
       console.log(this.user)
     }
-    this.initilize()
   }
   enroleUser(course: Course) {
     this.navCtrl.push(UserlistPage, { course: course, add: true })
   }
   openUsersInCourse(Course) {
+  }
+  setLoginUser(val) {
+    this.loginUser = val
   }
   deleteCourse(course: Course) {
     let confirmDel = this.alertCtrl.create({
@@ -159,13 +210,42 @@ export class HomePage {
   addItem() {
     this.navCtrl.push(AddCoursePage)
   }
-
+  /*  addcourse(course: Course) {
+     console.log("add")
+     if (!this.adminRole)
+       this.addcourse(course)
+   } */
   addCourseToUSer(course: Course) {
-    this.courseProvider.enroleUserInCourse(this.user, course)
-    this.userProvider.enroleUserInCourse(this.user, course)
-      .then(
-        error => { console.log(error) }
-      )
+    if (this.user == undefined)
+      this.user = this.loginUser
+    console.log(this.user)
+    if (!this.adminRole) {
+      let alert = this.alertCtrl.create({
+        title: "تاكيد",
+        message: "سوف تصبح مشترك بهذه الدوره قيجب عليك الالتزام بمواعيدها",
+        buttons: [
+          {
+            text: "موافق",
+            handler: () => {
+              this.courseProvider.enroleUserInCourse(this.user, course)
+              this.userProvider.enroleUserInCourse(this.user, course)
+              this.courseDetaisl(course)
+              this.storage.set("user", this.user)
+            }
+          },
+          {
+            text: "غير موافق"
+          }
+        ]
+      })
+      alert.present()
+    } else {
+      this.courseProvider.enroleUserInCourse(this.user, course)
+      this.userProvider.enroleUserInCourse(this.user, course)
+        .then(
+          error => { console.log(error) }
+        )
+    }
   }
   dismissModal() {
     this.viewCtrl.dismiss()
@@ -174,14 +254,26 @@ export class HomePage {
     this.viewCtrl.dismiss(course)
   }
   checkUserIncourse(coursesList: string[]): boolean {
-    if (this.courseAdding) {
+    if (this.courseAdding || !this.adminRole) {
       for (let i = 0; i < coursesList.length; i++) {
-        if (coursesList[i] == this.user.key) {
-          console.log(true)
-          return true
+        if (this.user == undefined) {
+          if (coursesList[i] == this.loginUser.key) {
+            if (!this.adminRole && this.choiceCourse)
+              return false
+            else return true
+          }
+        } else {
+          if (coursesList[i] == this.user.key || coursesList[i] == this.loginUser.key) {
+            return true
+          }
         }
       }
     }
-    return false
+    if (!this.adminRole && this.choiceCourse)
+      return true
+    else return false
+  }
+  goToAttendenceDays(c: Course) {
+    this.navCtrl.push(AtendenceDaysPage, { course: c })
   }
 }

@@ -11,6 +11,8 @@ import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 import { Attendence, dayinfo, usersdata, userkey } from '../../model/attendence';
 import { AttendenceProvider } from '../../providers/attendence/attendence';
 import * as Firebase from 'firebase'
+import { Storage } from '@ionic/storage';
+
 @IonicPage()
 @Component({
   selector: 'page-atendance',
@@ -54,7 +56,8 @@ export class AtendancePage {
     public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder, public userProvider: UserProvider,
     public modal: ModalController, public utils: UtilsProvider,
-    public userProv: UserProvider, public attendProv: AttendenceProvider
+    public userProv: UserProvider, public attendProv: AttendenceProvider,
+    private storage: Storage
   ) {
     this.form = formBuilder.group({
       user_name: ['', Validators.required],
@@ -73,6 +76,13 @@ export class AtendancePage {
       this.CourseInfo = data
       if (this.CourseInfo != undefined) {
         this.choicedCourse = true
+        this.storage.get("user").then((v) => {
+          if (v.role == "مستخدم") {
+            this.adminRole = false
+            this.UserInfo = v
+            this.choiceUser()
+          } else (this.adminRole = true)
+        })
         let attendenceLastTime = parseInt(this.CourseInfo.lastTime.slice(0, this.CourseInfo.lastTime.indexOf(":"))) * 60 + (parseInt(this.CourseInfo.lastTime.slice(this.CourseInfo.lastTime.indexOf(":") + 1)))
         let currentTime = new Date().getHours() * 60 + new Date().getMinutes()
         if (
@@ -99,18 +109,42 @@ export class AtendancePage {
       }
     })
   }
+  setUserInf(u) {
+    this.UserInfo = u
+  }
+  adminRole: boolean = true
   NewAteendence: boolean = false
   newUser: boolean = false
   newDay: boolean = false
   leav: boolean = false
+
   choiceUser() {
-    this.modalCuorse = this.modal.create(CourseParticipantsPage, { choiceUser: true, course: this.CourseInfo })
-    this.modalCuorse.present()
-    this.modalCuorse.onDidDismiss(data => {
-      this.utils.showLoading()
-      this.UserInfo = data
+    if (this.adminRole) {
+      this.modalCuorse = this.modal.create(CourseParticipantsPage, { choiceUser: true, course: this.CourseInfo })
+      this.modalCuorse.present()
+      console.log(this.UserInfo)
+      this.modalCuorse.onDidDismiss(data => {
+        this.utils.showLoading()
+        this.setUserInf(data)
+        this.userStauts()
+      })
+      console.log(this.UserInfo)
+    } else {
+      console.log("else")
+      this.showForm = false
+      this.choicedUser = false
+      this.choicedCourse = false
+      this.userStauts()
+    }
+    // this.utils.hideLoading()
+  }
+  userStauts() {
+    if (this.choicedCourse) {
       if (this.UserInfo != undefined) {
-        this.choicedUser = true
+        console.log("if")
+        if (this.adminRole)
+          this.choicedUser = true
+        console.log(this.CourseInfo)
         Firebase.database().ref("attendence").orderByChild("courseKey").equalTo(this.CourseInfo.key).once("value").then(s => {
           Object.keys(s.val()).forEach(key => {
             this.attendceInfo.key = key
@@ -135,18 +169,22 @@ export class AtendancePage {
                       break;
                     } else {
                       this.leav = false
+                      console.log("leav")
                     }
                     break
                   } else {
                     this.newDay = true
+                    console.log("new day")
                   }
                 }
                 break;
               } else {
+                console.log("new USer")
                 this.newUser = true
               }
             }
           } else {
+            console.log("new attendence")
             this.NewAteendence = true
           }
         })
@@ -164,9 +202,12 @@ export class AtendancePage {
         this.utils.hideLoading()
       } else {
         this.choicedUser = false
+        this.utils.hideLoading()
+        this.utils.BasicAlert("خطا حاول مره اخرى", "خطا")
       }
-    })
-    // this.utils.hideLoading()
+    } else {
+      this.showForm = true
+    }
   }
   attende() {
     console.log(this.signaturePad.isEmpty())
@@ -220,7 +261,7 @@ export class AtendancePage {
                   .then(url => {
                     k.days[j].usersData.leaveSign = url
                   }).then(() => {
-                    k.days[j].usersData.leaveTime = new Date().toLocaleString()
+                    k.days[j].usersData.leaveTime = new Date().toLocaleTimeString()
                     this.attendProv.addDay(this.attendceInfo)
                   })
                   .catch(err => {
@@ -248,9 +289,9 @@ export class AtendancePage {
             this.dayInfo.usersData.atteendSign = url
           }).then(() => {
             this.dayInfo.usersData.leaveSign = "لم يتم تسجيل المغادره"
-            this.dayInfo.usersData.attendTime = "لم يتم تسجيل المغادره"
+            this.dayInfo.usersData.leaveTime = "لم يتم تسجيل المغادره"
             this.dayInfo.usersData.attend = true
-            this.dayInfo.usersData.attendTime = new Date().toLocaleString()
+            this.dayInfo.usersData.attendTime = new Date().toLocaleTimeString()
             for (let i = 0; i < this.attendceInfo.usersKeys.length; i++) {
               if (this.attendceInfo.usersKeys[i].userKey == this.UserInfo.key)
                 this.attendceInfo.usersKeys[i].days.push(this.dayInfo)
@@ -273,7 +314,7 @@ export class AtendancePage {
         this.userProv.getImageURl("attendecneSigns/", this.UserInfo.identity + this.userProv.uploadTime)
           .then(url => {
             this.userAtendeInfo.atteendSign = url
-            this.userAtendeInfo.attendTime = new Date().toDateString()
+            this.userAtendeInfo.attendTime = new Date().toLocaleTimeString()
             this.userAtendeInfo.attend = true
             this.userAtendeInfo.leaveSign = "لم يتم تسجيل المغاره"
             this.userAtendeInfo.leaveTime = "لم يتم تسجيل المغاره"
@@ -299,11 +340,10 @@ export class AtendancePage {
         this.userProv.getImageURl("attendecneSigns/", this.UserInfo.identity + this.userProv.uploadTime)
           .then(url => {
             this.userAtendeInfo.atteendSign = url
-            this.userAtendeInfo.attendTime = new Date().toDateString()
+            this.userAtendeInfo.attendTime = new Date().toLocaleTimeString()
             this.userAtendeInfo.attend = true
             this.userAtendeInfo.leaveSign = "لم يتم تسجيل المغاره"
             this.userAtendeInfo.leaveTime = "لم يتم تسجيل المغاره"
-            let date = new Date
             this.dayInfo.date = new Date().toDateString()
             this.dayInfo.usersData = this.userAtendeInfo
             this.userKey.userKey = this.UserInfo.key

@@ -21,7 +21,7 @@
   <button ion-button (click)="openChoiceCourse()">اختار الدوره</button>
   <button ion-button (click)="choiceUser()" [hidden]="!choicedCourse"> اختار المشترك</button>
   <div>{{infoText}}</div>
-  <form *ngIf="form" [formGroup]="form"[hidden]="showForm">
+  <form *ngIf="form" [formGroup]="form" [hidden]="showForm">
     <p text-center>من فضلك قوم بادخال بريدك الالكترونى ورقم السرى للتاكد من شخصيتك وجلب بيانتك</p>
     <div padding>
       <ion-input type="text" [(ngModel)]="account.email" class="input-access-code" placeholder="اسم المستخدم"

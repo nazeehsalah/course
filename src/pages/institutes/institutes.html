@@ -11,7 +11,7 @@
         <ion-icon name="menu" [hidden]="choiceCourse"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>الموسسات</ion-title>
+    <ion-title>الجهات</ion-title>
     <ion-buttons right>
       <button ion-button icon-only (click)="addItem()">
         <ion-icon name="add"></ion-icon>
@@ -25,7 +25,7 @@
 <ion-content>
   <!--   <div [hidden]="coursesList.isEmpty">
    -->
-  <ion-searchbar (ionInput)="getItems($event)" (ionCancel)="onCancel()" placeholder="ابحث عن كورس"></ion-searchbar>
+  <ion-searchbar (ionInput)="getItems($event)" (ionCancel)="onCancel()" placeholder="ابحث عن جهة عمل"></ion-searchbar>
   <ion-list [hidden]="search">
     <ion-item-sliding class="cssForRoundSLidingItems" *ngFor="let item of institutesList | async" #slidingItem>
       <ion-item-options side="left" style="direction:ltr">
@@ -35,15 +35,13 @@
         <button ion-button color="dark" icon-start (click)="edit(item)">
           <ion-icon name="create"></ion-icon>
         </button>
-      </ion-item-options>
-      <ion-item-options side="right" style="direction:ltr">
         <button ion-button color="dark" icon-start (click)="deleteInstitute(item)">
-          <ion-icon name="trash"></ion-icon>
+          <ion-icon name="trash" class="trash"></ion-icon>
         </button>
       </ion-item-options>
       <ion-item>
         <h2>{{item.name}}</h2>
-        <p>{{item.code}}</p>
+        <p>{{item.nameInEnglish}}</p>
         <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff"></ion-icon>
       </ion-item>
     </ion-item-sliding>
@@ -57,15 +55,13 @@
         <button ion-button color="dark" icon-start (click)="edit(item)">
           <ion-icon name="create"></ion-icon>
         </button>
-      </ion-item-options>
-      <ion-item-options side="right" style="direction:ltr">
         <button ion-button color="dark" icon-start (click)="deleteInstitute(item)">
-          <ion-icon name="trash"></ion-icon>
+          <ion-icon name="trash" class="trash"></ion-icon>
         </button>
       </ion-item-options>
       <ion-item>
         <h2>{{item.name}}</h2>
-        <p>{{item.code}}</p>
+        <p>{{item.nameInEnglish}}</p>
         <ion-icon item-end ios="ios-checkmark" md="md-checkmark" class="nextDiff" [hidden]="courseAdding"></ion-icon>
       </ion-item>
     </ion-item-sliding>

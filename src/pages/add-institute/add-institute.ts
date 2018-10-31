@@ -19,9 +19,8 @@ import { InstitutesPage } from '../institutes/institutes';
 })
 export class AddInstitutePage {
   public institut: Institutes = {
-    code: '',
-    desc: '',
     name: '',
+    nameInEnglish:''
   }
   public btn_edit = false
   constructor(
@@ -41,7 +40,7 @@ export class AddInstitutePage {
   }
   checkInstitut(): boolean {
     if (
-      this.institut.code != ''
+      this.institut.nameInEnglish != ''
       && this.institut.name != ''
     )
       return true

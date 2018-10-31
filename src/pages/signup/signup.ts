@@ -1,16 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { User } from '../../model/user';
 import { AuthProvider } from '../../providers/auth/auth'
-import { HomePage } from '../home/home';
 import { UserlistPage } from '../userlist/userlist';
 import { UserProvider } from '../../providers/user/user'
-import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 import 'rxjs/Rx';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { Observable } from 'rxjs/Rx';
 import { Institutes } from '../../model/institutes';
 import { InstituteProvider } from '../../providers/institute/institute';
+import { Storage } from '@ionic/storage';
+import { NewHomePage } from '../new-home/new-home';
+import { AlertController } from 'ionic-angular';
+
 
 /**
  * Generated class for the SignupPage page.
@@ -25,25 +27,18 @@ import { InstituteProvider } from '../../providers/institute/institute';
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-  @ViewChild(SignaturePad) public signaturePad: SignaturePad;
-  public signaturePadOptions: Object = {
-    'minWidth': 2,
-    'canvasWidth': 340,
-    'canvasHeight': 200
-  };
-  public signatureImage: string;
-
   public account: User = {
     email: '',
     name: '',
+    nameInEnglish: '',
     identity: '',
     password: '',
     number: '',
     myDate: 'MM/DD/YYYY',
     gender: 'm',
-    sign: '',
     company: '',
-    courses: ['1']
+    courses: ['1'],
+    role: "مستخدم"
   }
   public rePassword
   public adminAdding = false
@@ -55,9 +50,12 @@ export class SignupPage {
     public userProvider: UserProvider,
     public utils: UtilsProvider,
     public menu: MenuController,
-    public instituteProvider: InstituteProvider
+    public instituteProvider: InstituteProvider,
+    private storage: Storage,
+    public alertCtrl: AlertController
   ) {
     this.adminAdding = this.navParams.get("adminAdding")
+    console.log(this.adminAdding)
     this.editUser = this.navParams.get("editUser")
     if (this.editUser == undefined) {
       this.editUser = false
@@ -81,23 +79,21 @@ export class SignupPage {
   }
   public options: Observable<Institutes[]>
   ionViewDidLoad() {
-    
+
   }
 
-  drawClear() {
-    this.signaturePad.clear();
-  }
   signup() {
+    console.log("sign")
     if (
       this.account.company == ''
       || this.account.email == ''
+      || this.account.nameInEnglish == ''
       || this.account.gender == ''
       || this.account.identity == ''
       || this.account.myDate == ''
       || this.account.name == ''
       || this.account.number == ''
       || this.account.password == ''
-      || this.signaturePad.isEmpty()
       || this.rePassword == ''
     ) {
       this.utils.BasicAlert("من فضلك قم بادخال جميع البيانات", "خطأ")
@@ -107,36 +103,50 @@ export class SignupPage {
       }
       else {
         this.utils.showLoading()
-        this.account.sign = this.signaturePad.toDataURL();
-        this.auth.signUp(this.account)
-          .then(
-            () => {
-              this.userProvider.uploadImage(this.account.sign, this.account, "userSignupSignture/")
-                .then(
-                  () => {
-                    this.userProvider.getImageURl("userSignupSignture/", this.account.identity)
-                      .then(url => {
-                        this.account.sign = url
-                        this.userProvider.adduser(this.account)
-                          .then(() => {
-                            this.utils.hideLoading();
-                            this.menu.enable(true, "menu-dark")
-                            this.navCtrl.setRoot(UserlistPage)
-                          })
-
+        if (this.adminAdding == undefined || this.adminAdding == false) {
+          this.account.role = "مستخدم"
+          this.auth.signUp(this.account)
+            .then(
+              () => {
+                this.userProvider.adduser(this.account)
+                  .then(() => {
+                    this.menu.enable(true, "menu-dark")
+                    this.storage.set("user", this.account)
+                    this.auth.signIn(this.account).then(() => {
+                      this.utils.hideLoading();
+                      this.navCtrl.setRoot(NewHomePage)
+                    })
+                      .catch(() => {
+                        this.utils.hideLoading();
+                        this.utils.BasicAlert("قد حدث خطا من فضلك حاول مره اخرى", "خطا")
                       })
-                      .catch(err => {
-                      })
-                  }
-                )
-                .catch(err => {
-                })
-            }
-          )
-          .catch(err => {
-            this.utils.BasicAlert("خطأ فى التسجيل تاكد من البريد الالكترونى والرقم السرى", "خطأ")
-            this.utils.hideLoading()
-          })
+                  })
+              }
+            )
+            .catch(err => {
+              console.log(err)
+              this.utils.BasicAlert("خطأ فى التسجيل تاكد من البريد الالكترونى والرقم السرى", "خطأ")
+              this.utils.hideLoading()
+            })
+        } else if (this.adminAdding) {
+          this.auth.signUp(this.account)
+            .then(
+              () => {
+                this.userProvider.adduser(this.account)
+                  .then(() => {
+                    this.menu.enable(true, "menu-dark")
+                    //this.storage.set("user", this.account)
+                    this.utils.hideLoading();
+                    this.navCtrl.setRoot(UserlistPage)
+                  })
+              }
+            )
+            .catch(err => {
+              console.log(err)
+              this.utils.BasicAlert("خطأ فى التسجيل تاكد من البريد الالكترونى والرقم السرى", "خطأ")
+              this.utils.hideLoading()
+            })
+        }
       }
     }
   }
@@ -150,7 +160,6 @@ export class SignupPage {
       || this.account.name == ''
       || this.account.number == ''
       || this.account.password == ''
-      || this.signaturePad.isEmpty
       || this.rePassword == ''
     ) {
       this.utils.BasicAlert("من فضلك قم بادخال جميع البيانات", "خطأ")
@@ -172,5 +181,61 @@ export class SignupPage {
           this.utils.BasicAlert("من فضلك قم بادخال جميع البيانات", "خطأ")
         })
     }
+  }
+  public newIns: Institutes = {
+    name: '',
+    nameInEnglish: ''
+  }
+  addInstite() {
+    const prompt = this.alertCtrl.create({
+      title: 'اضافه جهة عمل',
+      message: "من فضلك قم بادخال جميع البيانات",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'الاسم'
+        },
+        {
+          name: 'englishName',
+          placeholder: 'الاسم باللغه الانجليزيه'
+        },
+      ],
+      buttons: [
+        {
+          text: 'خروج',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'أضافة',
+          handler: data => {
+            if (
+              data.name!= ""
+              && data.englishName != ""
+            ) {
+             
+              this.newIns.name = data.name;
+              this.newIns.nameInEnglish = data.englishName
+              this.utils.showLoading()
+              this.instituteProvider.addInstitute(this.newIns)
+                .then(
+                  () => {
+                    this.utils.hideLoading();
+                  },
+                  error => {
+                    console.log(error)
+                    this.utils.BasicAlert("من فضلك حاول مرة اخرى", "خطأ")
+                  }
+                )
+            } else {
+              this.utils.BasicAlert("من فضلك قم بادخال جميع البيانات ثم حاول مره اخرى", "خطا")
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+
   }
 }

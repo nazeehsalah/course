@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, Content, AlertController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { User } from '../../model/user'
 import * as firebase from 'firebase'
 import { Course } from '../../model/course';

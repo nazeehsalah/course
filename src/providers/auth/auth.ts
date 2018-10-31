@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app'
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -13,7 +12,7 @@ import { UserProvider } from '../user/user';
 */
 @Injectable()
 export class AuthProvider {
-  private user: firebase.User
+  public user: firebase.User
   constructor(
     public afAuth: AngularFireAuth,
     public db: AngularFireDatabase,
@@ -33,9 +32,13 @@ export class AuthProvider {
   logout() {
     return this.afAuth.auth.signOut()
   }
-  deleteUser(user:User) {
-   /*  console.log(user.email)
-    this.afAuth.auth.currentUser.
-    this.afAuth.auth.currentUser.delete() */
+  deleteUser(user: User) {
+    /*  console.log(user.email)
+     this.afAuth.auth.currentUser.
+     this.afAuth.auth.currentUser.delete() */
+  }
+  resetPassword(email) {
+    console.log(email)
+    return this.afAuth.auth.sendPasswordResetEmail(email)
   }
 }

@@ -18,10 +18,11 @@ export class CoureseDetailsPage {
   public course:Course={
     name:'',
     code:'',
-    desc:"",
+    nameInEnglish:"",
+    deprt:"",
     startDate:"",
     endDate:'',
-    dayAbsance:0,
+    dayAbsance:'',
     lastTime:'',
     type:"free",
     users:["teste","eiru","jfdk","fjdh",'sdhfj',"hsdfj","dshj","hfdsj","hjfd","jgfs"]

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database'
+import { AngularFireDatabase } from 'angularfire2/database'
 import { User } from '../../model/user';
 import { Course } from '../../model/course';
 import * as firebase from 'firebase'
@@ -16,8 +16,8 @@ import 'rxjs/add/operator/map';
 export class UserProvider {
   public myPhotosRef: any;
   private users = this.db.list<User>("users")
-  private userSignupSignture = "userSignupSignture/"
-  private courseUsers: User[]
+  public userSignupSignture = "userSignupSignture/"
+  public courseUsers: User[]
   public uploadTime
   constructor(
     public db: AngularFireDatabase
@@ -79,6 +79,7 @@ export class UserProvider {
     return rootRef.once("value")
       .then(function (snapshot) {
         var childKey = snapshot.child("users/" + key2).exportVal(); // "ada"
+        console.log(childKey)
       });
   }
 }

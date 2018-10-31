@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu" [hidden]="choiceCourse"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>الرئيسيه</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content  class="getting-started">
+  <ion-row>
+    <ion-col *ngFor="let command of buttonsCommands" (click)="goToPage(command.page)">
+      <ion-card class="tile">
+        <ion-card-content>
+          <ion-item>
+            <h1>
+              <ion-icon [name]="command.icon" size="large"></ion-icon>
+            </h1>
+            <h3>{{command.commandName}}</h3>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col (click)="logout()">
+        <ion-card class="tile">
+          <ion-card-content>
+            <ion-item>
+              <h1>
+                <ion-icon name="exit" size="large"></ion-icon>
+              </h1>
+              <h3>مغادرة البرنامج</h3>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+  </ion-row>
+</ion-content>

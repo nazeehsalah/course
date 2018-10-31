@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>اضافه دوره جديد</ion-title>
+    <ion-title>اضافه الجهات</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,15 +15,10 @@
   <ion-list>
 
     <ion-item>
-      <ion-input type="text" placeholder="اسم المؤسسه" [(ngModel)]="institut.name" name="name"></ion-input>
+      <ion-input type="text" placeholder="اسم الجهه بالعربى" [(ngModel)]="institut.name" name="name"></ion-input>
     </ion-item>
-
     <ion-item>
-      <ion-input type="text" placeholder="كود المؤسسه" [(ngModel)]="institut.code" name="code"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input placeholder="وصف المؤسسه" type="text" [(ngModel)]="institut.desc" name="desc"></ion-input>
+      <ion-input type="text" placeholder="اسم الجهه بالانجليزيه" [(ngModel)]="institut.nameInEnglish" name="name"></ion-input>
     </ion-item>
     <div padding>
       <button ion-button class="signUpBtn" block (click)="addInstitut()" [hidden]="btn_edit"> اضافه مؤسسه</button>

@@ -15,34 +15,29 @@
     <ion-title>انشاء حساب جديد</ion-title>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content>
   <ion-list>
     <ion-item>
       <ion-input type="text" placeholder="الاسم" [(ngModel)]="account.name" name="name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input type="email" placeholder="البريد الالكترونى" [(ngModel)]="account.email" name="email"></ion-input>
+      <ion-input type="text" placeholder="الاسم باللغه الانجليزيه" [(ngModel)]="account.nameInEnglish" name="name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>الجهه التابع لها</ion-label>
+      <ion-input type="email" placeholder="البريد الالكترونى" [(ngModel)]="account.email" name="email"></ion-input>
+    </ion-item>
+    <p padding>اذا لم توجد جهة العمل الخاصه بك فى قائمه جهات العمل من فضلك اضغط على علامه <ion-icon name="add-circle" (click)="addInstite()"></ion-icon></p>
+    <ion-item>
+      <ion-label>جهة العمل</ion-label>
       <ion-select [(ngModel)]="account.company">
         <ion-option *ngFor="let item of options | async" value="{{item.key}}">{{item.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-input type="text" placeholder="رقم التليفون" [(ngModel)]="account.number" name="identity"></ion-input>
+      <ion-input type="text" placeholder="رقم الهاتف" [(ngModel)]="account.number" name="identity"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input type="text" placeholder="رقم الهويه" [(ngModel)]="account.identity" name="number"></ion-input>
-    </ion-item>
-    <ion-item>
-      <h2>التوقيع</h2>
-      <br>
-      <signature-pad [options]="signaturePadOptions" id="signatureCanvas"></signature-pad>
-      <button ion-button full color="light" (click)="drawClear()">Clear</button>
-
+      <ion-input type="text" placeholder="رقم البطاقه الشخصية" [(ngModel)]="account.identity" name="number"></ion-input>
     </ion-item>
     <ion-item>
       <ion-input type="password" placeholder="الرقم السرى" [(ngModel)]="account.password" name="password"></ion-input>
@@ -58,6 +53,13 @@
       <ion-select [(ngModel)]="account.gender">
         <ion-option value="انثى">انثى</ion-option>
         <ion-option value="ذكر">ذكر</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item [hidden]="!adminAdding">
+      <ion-label>المسؤليه</ion-label>
+      <ion-select [(ngModel)]="account.role">
+        <ion-option value="مدير">مدير</ion-option>
+        <ion-option value="مستخدم">مستخدم</ion-option>
       </ion-select>
     </ion-item>
     <div padding>

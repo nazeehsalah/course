@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ViewController, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { SignupPage } from '../signup/signup';
-import { HomePage } from '../home/home';
 import { AuthProvider } from '../../providers/auth/auth';
 import { UtilsProvider } from '../../providers/utils/utils';
+import * as firebase from 'firebase'
+import { User } from '../../model/user';
+import { Storage } from '@ionic/storage';
+import { NewHomePage } from '../new-home/new-home';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -30,15 +34,19 @@ export class LoginPage {
     email: '',
     password: ''
   };
-  private signinErrorString: string;
+  userInformation: User
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
     public auth: AuthProvider,
     public utils: UtilsProvider,
-    public menu : MenuController
+    public menu: MenuController,
+    public alertCtrl: AlertController,
+    private storage: Storage
   ) {
-    this.menu.enable(false,"menu-dark")
+    this.storage.clear()
+    this.menu.enable(false, "menu-dark")
+    this.menu.enable(false, "user")
     this.form = formBuilder.group({
       user_name: ['', Validators.required],
       user_pass: ['', Validators.required]
@@ -70,21 +78,83 @@ export class LoginPage {
         .then(
           (r) => {
             console.log(r)
-            this.utils.hideLoading()
-            this.menu.enable(true,"menu-dark")
-            this.navCtrl.setRoot(HomePage)
+            this.menu.enable(true, "menu-dark")
+            // get user information
+            let rootRef = firebase.database().ref("users");
+            rootRef.orderByChild("email").equalTo(this.account.email).once("value")
+              .then(s => {
+                console.log(s.val())
+                Object.keys(s.val()).forEach(k => {
+                  console.log(k)
+                  this.setUserInfo(s.val()[k], k)
+                  //this.userInformation = s.val()[k]
+                })
+              }).then(() => {
+                this.utils.hideLoading()
+                this.storage.set('user', this.userInformation);
+                this.navCtrl.setRoot(NewHomePage, { loginuser: this.userInformation })
+                console.log(this.userInformation)
+              })
+              .catch((err) => {
+                console.log(err)
+                this.utils.hideLoading()
+                this.utils.BasicAlert("خطا فى تسجيل الدخول", "خطا")
+              })
           },
-          (error) => {
-            this.utils.hideLoading()
-            this.utils.BasicAlert("اسم المستخدم او الرقم السرى غير صحيح", "خطأ")
-          }
-        )
-
+        ).catch((error) => {
+          this.utils.hideLoading()
+          this.utils.BasicAlert("اسم المستخدم او الرقم السرى غير صحيح", "خطأ")
+        })
     }
 
   }
+  setUserInfo(usr: User, k) {
+    this.userInformation = usr
+    this.userInformation.key = k
+  }
   signup() {
     this.navCtrl.push(SignupPage)
+  }
+  forgetPassword() {
+    const prompt = this.alertCtrl.create({
+      title: 'تغيير الرقم السرى',
+      message: "من فضلك قم بادخال بريدك الالكترونى",
+      inputs: [
+        {
+
+          name: 'mail',
+          placeholder: 'البريد الالكترونى'
+        },
+      ],
+      buttons: [
+        {
+          text: 'غير موافق',
+          handler: data => {
+
+            console.log('Cancel clicked');
+            // this.auth.resetPassword
+          }
+        },
+        {
+          text: 'موافق',
+          handler: data => {
+            this.utils.showLoading()
+            console.log(data)
+            this.auth.resetPassword(data.mail).then(
+              () => {
+                this.utils.hideLoading()
+                this.utils.BasicAlert("تم الارسال من فضلك افحص بريدك الالكترونى", "تاكيد")
+              }
+            ).catch(() => {
+              this.utils.hideLoading()
+              this.utils.BasicAlert("حدث خطا من فضلك حاول مره اخرى", "خطأ")
+            })
+            console.log('Saved clicked');
+          }
+        }
+      ]
+    });
+    prompt.present()
   }
 
 }

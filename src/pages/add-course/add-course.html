@@ -18,51 +18,49 @@
 
 
 <ion-content>
-    <ion-list>
+  <ion-list>
+    <ion-item>
+      <ion-input type="text" placeholder="كود البرنامج" [(ngModel)]="course.code" name="code"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="اسم البرنامج" [(ngModel)]="course.name" name="name"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label fixed>اسم الدوره</ion-label>
-        <ion-input type="text" [(ngModel)]="course.name" name="name"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="اسم البرنامج باللغه الانجليزيه" [(ngModel)]="course.nameInEnglish" name="desc"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>القسم</ion-label>
+      <ion-select [(ngModel)]="course.deprt">
+        <ion-option value="خدمه مجتمع">خدمه مجتمع</ion-option>
+        <ion-option value="تعليم مستمر">تعليم مستمر</ion-option>
+        <ion-option value="تعليم مستمر"> اخرى</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>نوع البرنامج</ion-label>
+      <ion-select [(ngModel)]="course.type">
+        <ion-option value="تعاقدى">تعاقدى</ion-option>
+        <ion-option value="عام">عام</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-datetime displayFormat="MMM DD, YYYY" max="2200" placeholder="تاريخ البدايه" doneText="تم" cancelText="اغلاق" [(ngModel)]="course.startDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-datetime displayFormat="MMM DD, YYYY" max="2200" placeholder="تاريخ النهايه" cancelText="اغلاق" doneText="تم" [(ngModel)]="course.endDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-input type="number" min="0" placeholder="أيام الغياب المسوح بها" [(ngModel)]="course.dayAbsance" name="dayAbsance"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-datetime displayFormat="HH:mm" placeholder="اخر وقت لتسجيل الحضور" pickerFormat="HH:mm" doneText="تم" cancelText="اغلاق"
+        [(ngModel)]="course.lastTime"></ion-datetime>
+    </ion-item>
+    <div padding>
+      <button ion-button class="signUpBtn" block (click)="addCourse()" [hidden]="btn_edit"> اضافه دوره</button>
+      <button ion-button class="signUpBtn" block (click)="updateCourse()" [hidden]="!btn_edit"> تعديل البرنامج</button>
 
-      <ion-item>
-        <ion-label fixed>كود الدوره</ion-label>
-        <ion-input type="text" [(ngModel)]="course.code" name="code"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label fixed>وصف الدوره</ion-label>
-        <ion-input type="text" [(ngModel)]="course.desc" name="desc"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label fixed>الغياب المسوح</ion-label>
-        <ion-input type="number" [(ngModel)]="course.dayAbsance" name="dayAbsance"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label fixed>اخر الحضور</ion-label>
-        <ion-datetime displayFormat="hh:mm A"   pickerFormat="hh:mm A" doneText="تم" cancelText="اغلاق" [(ngModel)]="course.lastTime" ></ion-datetime>
-      </ion-item>
-        <ion-item>
-        <ion-label fixed>تاريخ البدايه</ion-label>
-        <ion-datetime displayFormat="MMM DD, YYYY" max="2200" doneText="تم" cancelText="اغلاق" [(ngModel)]="course.startDate"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label fixed>تاريخ النهايه</ion-label>
-        <ion-datetime displayFormat="MMM DD, YYYY" max="2200" cancelText="اغلاق" doneText="تم" [(ngModel)]="course.endDate"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label>نوع الدوره</ion-label>
-        <ion-select [(ngModel)]="course.type">
-          <ion-option value="مجانيه">مجانيه</ion-option>
-          <ion-option value="مدفوعه">مدفوعه</ion-option>
-        </ion-select>
-      </ion-item>
-      <div padding>
-        <button ion-button class="signUpBtn" block (click)="addCourse()" [hidden]="btn_edit" > اضافه دوره</button>
-        <button ion-button class="signUpBtn" block (click)="updateCourse()" [hidden]="!btn_edit"> تعديل الدوره</button>
-
-      </div>
-    </ion-list>
+    </div>
+  </ion-list>
 </ion-content>
-
-

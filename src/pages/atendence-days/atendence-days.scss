@@ -1,0 +1,8 @@
+page-atendence-days {
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+  ion-label{
+    direction: ltr
+  }
+}

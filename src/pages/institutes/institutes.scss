@@ -35,7 +35,7 @@ page-institutes {
     color: map_get($colors, theme_color);
   }
 
-  ion-item-options[side=right] ion-icon {
+  .trash{
     color: red;
   }
 

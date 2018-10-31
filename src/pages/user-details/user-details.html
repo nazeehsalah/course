@@ -7,9 +7,12 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>User details</ion-title>
+    <ion-title>بيانات المستخدم</ion-title>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu" [hidden]="admin"></ion-icon>
+    </button>
     <ion-buttons end (click)="dismiss()">
-      <button ion-button>
+      <button ion-button [hidden]="!admin">
         <ion-icon name="md-close"></ion-icon>
       </button>
     </ion-buttons>
@@ -20,7 +23,10 @@
     <h4>الاسم</h4>
     <p>{{user.name}}</p>
     <hr>
-    <h4> رقم الهويه</h4>
+    <h4>الاسم باللغه الانجليزيه</h4>
+    <p>{{user.nameInEnglish}}</p>
+    <hr>
+    <h4> رقم البطاقة الشخصيه</h4>
     <p>{{user.identity}}</p>
     <hr>
     <h4>البريد الالكترونى</h4>
@@ -37,8 +43,5 @@
     <hr>
     <h4>الجنس</h4>
     <p>{{user.gender}}</p>
-    <hr>
-    <h4>التوقيع</h4>
-    <img [src]="user.sign">
   </div>
 </ion-content>

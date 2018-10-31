@@ -1,17 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Icon } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { SignupPage } from '../pages/signup/signup';
 import { LoginPage } from '../pages/login/login';
 import { UserlistPage } from '../pages/userlist/userlist';
 import { AtendancePage } from '../pages/atendance/atendance';
-import { LeavingPage } from '../pages/leaving/leaving';
 import { AuthProvider } from '../providers/auth/auth';
 import { InstitutesPage } from '../pages/institutes/institutes';
+import { UserCoursesPage } from '../pages/user-courses/user-courses';
+import { UserDetailsPage } from '../pages/user-details/user-details';
+import { NewHomePage } from '../pages/new-home/new-home';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,6 +20,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
   pages: Array<{ title: string, component: any, icon: string }>;
+  userpages: Array<{ title: string, component: any, icon: string }>;
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -29,11 +30,19 @@ export class MyApp {
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'الدورات المتاحه', component: HomePage, icon: "home" },
+      { title: "الصفحه الرئيسيه", component: NewHomePage, icon: "home" },
+      { title: ' البرامج المتاحه', component: HomePage, icon: "apps" },
       { title: 'الاعضاء', component: UserlistPage, icon: "people" },
-      { title: ' حضور او مغادره', component: AtendancePage, icon: "add-circle" },
-      { title: ' الموسسات', component: InstitutesPage, icon: "home" },
+      { title: 'الحضور والانصراف', component: AtendancePage, icon: "add-circle" },
+      { title: "جهات العمل", component: InstitutesPage, icon: "construct" },
     ];
+    this.userpages = [
+      { title: 'الصفحه الرئيسيه', component: NewHomePage, icon: "home" },
+      { title: 'البرامج المتاحه', component: HomePage, icon: "apps" },
+      { title: 'دوراتك', component: UserCoursesPage, icon: "people" },
+      { title: ' حضور او انصراف', component: AtendancePage, icon: "add-circle" },
+      { title: ' ملفك الشخصى', component: UserDetailsPage, icon: "person" },
+    ]
   }
   initializeApp() {
     this.platform.ready().then(() => {
@@ -54,10 +63,11 @@ export class MyApp {
     return page == this.activePage;
   }
   logout() {
+    console.log("logout")
     this.auth.logout()
       .then(
         () => {
-          this.rootPage = LoginPage
+          this.nav.setRoot(LoginPage)
         },
         error => {
           console.log("error Logout" + error)

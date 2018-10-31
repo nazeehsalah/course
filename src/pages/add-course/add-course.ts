@@ -20,11 +20,12 @@ import { HomePage } from '../home/home';
 export class AddCoursePage {
   public course: Course = {
     name: '',
+    nameInEnglish:'',
     code: '',
-    desc: "",
+    deprt: "",
     startDate: "",
     endDate: '',
-    dayAbsance: 0,
+    dayAbsance: "",
     lastTime: '',
     type: "free",
     users: ["0"]
@@ -89,10 +90,11 @@ export class AddCoursePage {
   checkCourse(): boolean {
     if (
       this.course.code != ''
-      && this.course.desc != ''
+      && this.course.deprt != ''
       && this.course.endDate != ''
       && this.course.lastTime != ''
       && this.course.name != ''
+      && this.course.nameInEnglish !=''
       && this.course.startDate != ''
       && this.course.type != ''
     )

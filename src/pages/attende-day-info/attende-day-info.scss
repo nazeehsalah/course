@@ -1,0 +1,21 @@
+page-attende-day-info {
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+  h4 {
+    color: map_get($colors, theme_color) !important;
+  }
+
+  .toolbar-background {
+    background-color: map_get($colors, theme_color) !important;
+  }
+
+  ion-icon {
+    color: #fff
+  }
+
+  .toolbar-title-ios,
+  .toolbar-title-md {
+    color: #fff
+  }
+}

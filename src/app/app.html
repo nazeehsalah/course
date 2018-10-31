@@ -14,7 +14,29 @@
       <button style="text-align: right" menuClose="right" ion-item *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon [name]="p.icon" item-right></ion-icon> {{p.title}}
       </button>
-      <button style="text-align: right" menuClose="left" ion-item (click)="logout()">
+      <button style="text-align: right" menuClose="left" ion-item (click)=" logout()">
+        <ion-icon name='exit' item-right></ion-icon> مغارده البرنامج
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-menu [content]="content" id="user" side="right">
+  <ion-header class="sidemenuHeader">
+    <ion-toolbar>
+      <ion-item no-lines>
+        <ion-avatar item-right>
+          <img src="../assets/imgs/Sultan_Qaboos_University_Logo.png">
+        </ion-avatar>
+        <h2 style="text-align: right">اهلا بك</h2>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="menu">
+    <ion-list>
+      <button style="text-align: right" menuClose="right" ion-item *ngFor="let p of userpages" (click)="openPage(p)">
+        <ion-icon [name]="p.icon" item-right></ion-icon> {{p.title}}
+      </button>
+      <button style="text-align: right" menuClose="left" ion-item (click)=" logout()">
         <ion-icon name='exit' item-right></ion-icon> مغارده البرنامج
       </button>
     </ion-list>

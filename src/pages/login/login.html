@@ -7,21 +7,25 @@
     <h1 class="welcomeHeader">تسجيل الدخول</h1>
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="signIn()">
       <div padding>
-        <ion-input type="text"  [(ngModel)]="account.email" class="input-access-code" placeholder="اسم المستخدم" formControlName="user_name"></ion-input>
+        <ion-input type="text" [(ngModel)]="account.email" class="input-access-code" placeholder="اسم المستخدم"
+          formControlName="user_name"></ion-input>
         <br>
-        <ion-input type="password" [(ngModel)]="account.password" class="input-access-code" placeholder="الرقم السرى" formControlName="user_pass"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.password" class="input-access-code" placeholder="الرقم السرى"
+          formControlName="user_pass"></ion-input>
         <br>
-        <a >
+        <a>
           <button ion-button block class="login">تسجيل الدخول</button>
         </a>
         <p style="text-align:center;color:  #1ABC9C;">-او-</p>
-
-        <div class="create_account" >
-          <a (click)="signup()">انشاء حساب جديد</a>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+        <div class="create_account">
+          <a (click)="forgetPassword()">نسيت كله المرور</a>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+          <hr>
+          <div class="create_account">
+            <a (click)="signup()">انشاء حساب جديد</a>​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+          </div>
         </div>
       </div>
     </form>
   </div>
 
 </ion-content>
-

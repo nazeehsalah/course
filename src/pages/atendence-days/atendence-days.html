@@ -1,0 +1,16 @@
+<!--
+  Generated template for the AtendenceDaysPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>ايام الحضور والانصراف</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list style="direction: ltr !important" >
+    <ion-item style="direction:ltr" *ngFor="let item of daysList" (click)="goToUsersList(item)">{{item}}</ion-item>
+  </ion-list>
+</ion-content>

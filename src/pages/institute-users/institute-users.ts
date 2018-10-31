@@ -30,10 +30,10 @@ export class InstituteUsersPage {
       let rootRef = firebase.database().ref("users/");
       rootRef.orderByChild("company").equalTo(this.institut.key).once("value")
         .then(s => {
-          console.log(s.val())
-          Object.keys(s.val()).forEach(k => {
-            this.userList.push(s.val()[k])
-          })
+          if (s.val() != null)
+            Object.keys(s.val()).forEach(k => {
+              this.userList.push(s.val()[k])
+            })
         })
       this.utils.hideLoading()
     } else {
